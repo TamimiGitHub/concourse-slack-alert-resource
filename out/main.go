@@ -4,9 +4,11 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
 	"strconv"
+	"strings"
 
 	"github.com/arbourd/concourse-slack-alert-resource/concourse"
 	"github.com/arbourd/concourse-slack-alert-resource/slack"
@@ -14,9 +16,19 @@ import (
 
 func buildMessage(alert Alert, m concourse.BuildMetadata) *slack.Message {
 	fallback := fmt.Sprintf("%s -- %s", fmt.Sprintf("%s: %s/%s/%s", alert.Message, m.PipelineName, m.JobName, m.BuildName), m.URL)
+	log.Printf("TextFile location passed from yaml: %s", alert.TextFile)
+	const PutBasePath = "/tmp/build/put/"
+	msg := alert.Message
+	if exists(PutBasePath + alert.TextFile) {
+		log.Printf("Text file is found")
+		content, _ := ioutil.ReadFile(PutBasePath + alert.TextFile)
+		msg = strings.TrimSpace(string(content))
+	} else {
+		log.Printf("No custom text file found. Using default message value: %s", msg)
+	}
 	attachment := slack.Attachment{
 		Fallback:   fallback,
-		AuthorName: alert.Message,
+		AuthorName: msg,
 		Color:      alert.Color,
 		Footer:     m.URL,
 		FooterIcon: alert.IconURL,
@@ -35,6 +47,16 @@ func buildMessage(alert Alert, m concourse.BuildMetadata) *slack.Message {
 	}
 
 	return &slack.Message{Attachments: []slack.Attachment{attachment}, Channel: alert.Channel}
+}
+
+func exists(path string) bool {
+	_, err := os.Stat(path)
+	log.Printf("Error: %s", err)
+	if err != nil || os.IsNotExist(err) {
+		return false
+	}
+
+	return true
 }
 
 func previousBuildStatus(input *concourse.OutRequest, m concourse.BuildMetadata) (string, error) {

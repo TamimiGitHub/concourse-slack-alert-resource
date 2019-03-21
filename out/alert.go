@@ -9,6 +9,7 @@ type Alert struct {
 	Color    string
 	IconURL  string
 	Message  string
+	TextFile string
 	Disabled bool
 }
 
@@ -81,6 +82,6 @@ func NewAlert(input *concourse.OutRequest) Alert {
 	if input.Params.Color != "" {
 		alert.Color = input.Params.Color
 	}
-
+	alert.TextFile = input.Params.TextFile
 	return alert
 }
