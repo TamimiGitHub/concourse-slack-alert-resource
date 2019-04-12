@@ -36,7 +36,7 @@ type OutParams struct {
 	Color       string `json:"color"`
 	Disable     bool   `json:"disable"`
 	Channel     string `json:"channel"`
-	MessageFile string `json:"text_file"`
+	MessageFile string `json:"message_file"`
 }
 
 // OutRequest is in the input for the out operation.
