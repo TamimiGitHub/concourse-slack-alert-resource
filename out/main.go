@@ -16,7 +16,6 @@ import (
 
 func buildMessage(alert Alert, m concourse.BuildMetadata) *slack.Message {
 	fallback := fmt.Sprintf("%s -- %s", fmt.Sprintf("%s: %s/%s/%s", alert.Message, m.PipelineName, m.JobName, m.BuildName), m.URL)
-	log.Printf("MessageFile location passed from yaml: %s", alert.MessageFile)
 	const PutBasePath = "/tmp/build/put/"
 	msg := alert.Message
 
