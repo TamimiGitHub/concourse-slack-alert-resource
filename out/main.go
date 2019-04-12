@@ -19,13 +19,16 @@ func buildMessage(alert Alert, m concourse.BuildMetadata) *slack.Message {
 	log.Printf("MessageFile location passed from yaml: %s", alert.MessageFile)
 	const PutBasePath = "/tmp/build/put/"
 	msg := alert.Message
-	if exists(PutBasePath + alert.MessageFile) {
-		log.Printf("Text file is found")
-		content, _ := ioutil.ReadFile(PutBasePath + alert.MessageFile)
+
+	// Check if MessageFile is set and file read is successful
+	if alert.MessageFile != "" {
+		content, err := ioutil.ReadFile(PutBasePath + alert.MessageFile)
+		if err != nil {
+			log.Fatalln(err)
+		}
 		msg = strings.TrimSpace(string(content))
-	} else {
-		log.Printf("No custom text file found. Using default message value: %s", msg)
 	}
+
 	attachment := slack.Attachment{
 		Fallback:   fallback,
 		AuthorName: msg,
@@ -47,16 +50,6 @@ func buildMessage(alert Alert, m concourse.BuildMetadata) *slack.Message {
 	}
 
 	return &slack.Message{Attachments: []slack.Attachment{attachment}, Channel: alert.Channel}
-}
-
-func exists(path string) bool {
-	_, err := os.Stat(path)
-	log.Printf("Error: %s", err)
-	if err != nil || os.IsNotExist(err) {
-		return false
-	}
-
-	return true
 }
 
 func previousBuildStatus(input *concourse.OutRequest, m concourse.BuildMetadata) (string, error) {
