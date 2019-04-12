@@ -23,10 +23,9 @@ func buildMessage(alert Alert, m concourse.BuildMetadata) *slack.Message {
 	// Check if MessageFile is set and file read is successful
 	if alert.MessageFile != "" {
 		content, err := ioutil.ReadFile(PutBasePath + alert.MessageFile)
-		if err != nil {
-			log.Fatalln(err)
+		if err == nil {
+			msg = strings.TrimSpace(string(content))
 		}
-		msg = strings.TrimSpace(string(content))
 	}
 
 	attachment := slack.Attachment{
