@@ -4,13 +4,13 @@ import "github.com/arbourd/concourse-slack-alert-resource/concourse"
 
 // An Alert defines the notification that will be sent to Slack.
 type Alert struct {
-	Type     string
-	Channel  string
-	Color    string
-	IconURL  string
-	Message  string
-	TextFile string
-	Disabled bool
+	Type        string
+	Channel     string
+	Color       string
+	IconURL     string
+	Message     string
+	MessageFile string
+	Disabled    bool
 }
 
 // NewAlert constructs and returns an Alert.
@@ -82,6 +82,6 @@ func NewAlert(input *concourse.OutRequest) Alert {
 	if input.Params.Color != "" {
 		alert.Color = input.Params.Color
 	}
-	alert.TextFile = input.Params.TextFile
+	alert.MessageFile = input.Params.MessageFile
 	return alert
 }

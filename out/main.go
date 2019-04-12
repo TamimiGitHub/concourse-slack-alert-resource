@@ -16,12 +16,12 @@ import (
 
 func buildMessage(alert Alert, m concourse.BuildMetadata) *slack.Message {
 	fallback := fmt.Sprintf("%s -- %s", fmt.Sprintf("%s: %s/%s/%s", alert.Message, m.PipelineName, m.JobName, m.BuildName), m.URL)
-	log.Printf("TextFile location passed from yaml: %s", alert.TextFile)
+	log.Printf("MessageFile location passed from yaml: %s", alert.MessageFile)
 	const PutBasePath = "/tmp/build/put/"
 	msg := alert.Message
-	if exists(PutBasePath + alert.TextFile) {
+	if exists(PutBasePath + alert.MessageFile) {
 		log.Printf("Text file is found")
-		content, _ := ioutil.ReadFile(PutBasePath + alert.TextFile)
+		content, _ := ioutil.ReadFile(PutBasePath + alert.MessageFile)
 		msg = strings.TrimSpace(string(content))
 	} else {
 		log.Printf("No custom text file found. Using default message value: %s", msg)
