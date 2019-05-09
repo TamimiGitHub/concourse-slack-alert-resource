@@ -10,8 +10,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/arbourd/concourse-slack-alert-resource/concourse"
-	"github.com/arbourd/concourse-slack-alert-resource/slack"
+	"github.com/tamimigithub/concourse-slack-alert-resource/concourse"
+	"github.com/tamimigithub/concourse-slack-alert-resource/slack"
 )
 
 func buildMessage(alert Alert, m concourse.BuildMetadata) *slack.Message {
@@ -21,6 +21,7 @@ func buildMessage(alert Alert, m concourse.BuildMetadata) *slack.Message {
 
 	// Check if MessageFile is set and file read is successful
 	if alert.MessageFile != "" {
+		log.Printf("TextFile location passed from yaml: %s", alert.MessageFile)
 		content, err := ioutil.ReadFile(PutBasePath + alert.MessageFile)
 		if err == nil {
 			msg = strings.TrimSpace(string(content))

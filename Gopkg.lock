@@ -10,12 +10,34 @@
   version = "v1.4.2"
 
 [[projects]]
+  digest = "1:4f56c72fa75fdac4b99353a5456a040e926b5ef62d2b657cffeaae2869e2a411"
+  name = "github.com/arbourd/concourse-slack-alert-resource"
+  packages = [
+    "concourse",
+    "slack",
+  ]
+  pruneopts = "NUT"
+  revision = "0d09d21234398d14c69265a090520d964ad718af"
+  version = "v0.7.0"
+
+[[projects]]
   digest = "1:15042ad3498153684d09f393bbaec6b216c8eec6d61f63dff711de7d64ed8861"
   name = "github.com/golang/protobuf"
   packages = ["proto"]
   pruneopts = "NUT"
   revision = "b4deda0973fb4c70b50d226b1af49f3da59f5265"
   version = "v1.1.0"
+
+[[projects]]
+  digest = "1:75a40779846cb73ed4de0a212fb2a23851c857a24baab55920b5232137cbd57b"
+  name = "github.com/tamimigithub/concourse-slack-alert-resource"
+  packages = [
+    "concourse",
+    "slack",
+  ]
+  pruneopts = "NUT"
+  revision = "193594ba14e6a0a8b2f468f03b05e40850cc1ebc"
+  version = "v0.6.0"
 
 [[projects]]
   branch = "master"
@@ -60,6 +82,10 @@
   analyzer-version = 1
   input-imports = [
     "github.com/Masterminds/semver",
+    "github.com/arbourd/concourse-slack-alert-resource/concourse",
+    "github.com/arbourd/concourse-slack-alert-resource/slack",
+    "github.com/tamimigithub/concourse-slack-alert-resource/concourse",
+    "github.com/tamimigithub/concourse-slack-alert-resource/slack",
     "golang.org/x/oauth2",
   ]
   solver-name = "gps-cdcl"
